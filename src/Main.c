@@ -1,23 +1,24 @@
 #include "Control.h"
 #include "DataBase.h"
 #include "Scan.h"
+#include "Colors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
 
 int show_menu(room_list_t *rooms) {
-    printf("\n=== Select room ===\n\n");
+    printf("\n" COLOR_HIGHLIGHT "=== Select room ===" COLOR_RESET "\n\n");
 
     for (int i = 0; i < rooms->count; i++) {
-        printf("  [%d] %s\n", i + 1, rooms->rooms[i].name);
+        printf("  " COLOR_CYAN "[%d]" COLOR_RESET " %s\n", i + 1, rooms->rooms[i].name);
     }
 
-    printf("\n  [0] Exit\n");
+    printf("\n  " COLOR_RED "[0]" COLOR_RESET " Exit\n");
 
     int choice = -1;
     while (choice < 0 || choice > rooms->count) {
-        printf("\nChoice: ");
+        printf("\n" COLOR_PROMPT);
         if (scanf("%d", &choice) != 1) {
             while (getchar() != '\n');
             choice = -1;
@@ -50,13 +51,13 @@ int main(int argc, char *argv[]) {
 
     sqlite3 *db;
     if (sqlite3_open(db_path, &db) != SQLITE_OK) {
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, COLOR_ERROR "Cannot open database: %s\n" COLOR_RESET, sqlite3_errmsg(db));
         return 1;
     }
 
     room_list_t rooms = db_get_rooms(db);
     if (rooms.count == 0) {
-        fprintf(stderr, "No rooms found in database\n");
+        fprintf(stderr, COLOR_ERROR "No rooms found in database\n" COLOR_RESET);
         sqlite3_close(db);
         return 1;
     }
@@ -68,34 +69,34 @@ int main(int argc, char *argv[]) {
     }
 
     const char *selected_room = rooms.rooms[choice - 1].name;
-    printf("\nSelected: %s\n", selected_room);
+    printf("\n" COLOR_SERVER "Selected: %s" COLOR_RESET "\n", selected_room);
 
     pc_list_t room_pcs = db_get_by_room(db, selected_room);
-    printf("PCs in database: %d\n", room_pcs.count);
+    printf(COLOR_SERVER "PCs in database: %d" COLOR_RESET "\n", room_pcs.count);
 
     if (do_ping) {
-        printf("\nPinging subnet %s.0/24 ...\n", subnet);
+        printf("\n" COLOR_INFO "Pinging subnet %s.0/24 ..." COLOR_RESET "\n", subnet);
         ping_sweep(subnet);
     }
 
-    printf("\nReading ARP table for %s ...\n", selected_room);
+    printf("\n" COLOR_INFO "Reading ARP table for %s ..." COLOR_RESET "\n", selected_room);
     scan_device_t scanned[256];
     int scan_count = scan_network(scanned, 256);
-    printf("Devices in ARP cache: %d\n\n", scan_count);
+    printf(COLOR_INFO "Devices in ARP cache: %d" COLOR_RESET "\n\n", scan_count);
 
-    printf("Matching MAC addresses:\n");
+    printf(COLOR_SERVER "Matching MAC addresses:" COLOR_RESET "\n");
     client_t clients[MAX_CLIENTS];
     int client_count = filter_by_room(&room_pcs, scanned, scan_count, clients, key_path, user);
 
-    printf("\nMatched PCs: %d\n", client_count);
+    printf("\n" COLOR_SUCCESS "Matched PCs: %d" COLOR_RESET "\n", client_count);
 
     if (client_count == 0) {
-        fprintf(stderr, "No devices from %s found on network\n", selected_room);
+        fprintf(stderr, COLOR_ERROR "No devices from %s found on network\n" COLOR_RESET, selected_room);
         sqlite3_close(db);
         return 1;
     }
 
-    printf("\nConnecting...\n");
+    printf("\n" COLOR_INFO "Connecting..." COLOR_RESET "\n");
     int connected = 0;
     for (int i = 0; i < client_count; i++) {
         if (client_connect(&clients[i]) == SSH_OK) {
@@ -103,19 +104,19 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("\nConnected: %d/%d\n\n", connected, client_count);
+    printf("\n" COLOR_SUCCESS "Connected: %d/%d" COLOR_RESET "\n\n", connected, client_count);
 
     if (connected == 0) {
-        fprintf(stderr, "No clients connected\n");
+        fprintf(stderr, COLOR_ERROR "No clients connected\n" COLOR_RESET);
         sqlite3_close(db);
         return 1;
     }
 
     char command[1024];
-    printf("Type 'help' for commands, 'exit' to quit:\n\n");
+    printf(COLOR_INFO "Type 'help' for commands, 'exit' to quit:" COLOR_RESET "\n\n");
 
     while (1) {
-        printf(">> ");
+        printf(COLOR_PROMPT);
         if (!fgets(command, sizeof(command), stdin)) break;
 
         command[strcspn(command, "\n")] = '\0';
@@ -127,41 +128,86 @@ int main(int argc, char *argv[]) {
         }
 
         if (strcmp(command, "help") == 0) {
-            printf("Commands:\n");
-            printf("  <command>   - send command to all clients in %s\n", selected_room);
-            printf("  list        - show connected clients\n");
-            printf("  scan        - show all devices on network\n");
-            printf("  help        - show this help\n");
-            printf("  exit/quit/q - disconnect and exit\n");
+            printf(COLOR_HIGHLIGHT "Commands:" COLOR_RESET "\n");
+            printf("  " COLOR_CYAN "<command>" COLOR_RESET "   - send command to all clients in " COLOR_YELLOW "%s" COLOR_RESET "\n", selected_room);
+            printf("  " COLOR_CYAN "list" COLOR_RESET "        - show connected clients\n");
+            printf("  " COLOR_CYAN "scan" COLOR_RESET "        - show all devices on network\n");
+            printf("  " COLOR_CYAN "reconnect" COLOR_RESET "  - reconnect to all clients\n");
+            printf("  " COLOR_CYAN "help" COLOR_RESET "        - show this help\n");
+            printf("  " COLOR_RED "exit/quit/q" COLOR_RESET " - disconnect and exit\n");
             continue;
         }
 
         if (strcmp(command, "list") == 0) {
-            printf("Connected clients in %s:\n", selected_room);
+            printf(COLOR_HIGHLIGHT "Connected clients in %s:" COLOR_RESET "\n", selected_room);
             for (int i = 0; i < client_count; i++) {
-                printf("  [%s] %s - %s\n",
-                       clients[i].session ? "ONLINE" : "OFFLINE",
-                       clients[i].host,
-                       clients[i].user);
+                if (clients[i].session) {
+                    printf("  " COLOR_GREEN "[%s]" COLOR_RESET " %s - %s\n",
+                           "ONLINE", clients[i].host, clients[i].user);
+                } else {
+                    printf("  " COLOR_RED "[%s]" COLOR_RESET " %s - %s\n",
+                           "OFFLINE", clients[i].host, clients[i].user);
+                }
             }
             printf("\n");
             continue;
         }
 
         if (strcmp(command, "scan") == 0) {
-            printf("Scanning ARP table...\n\n");
+            printf(COLOR_INFO "Scanning ARP table..." COLOR_RESET "\n\n");
             scan_device_t all_devices[256];
             int all_count = scan_network(all_devices, 256);
 
-            printf("%-4s %-16s %-18s\n", "#", "IP", "MAC");
+            printf(COLOR_HIGHLIGHT "%-4s %-16s %-18s" COLOR_RESET "\n", "#", "IP", "MAC");
             printf("%-4s %-16s %-18s\n", "---", "---", "---");
 
             for (int i = 0; i < all_count; i++) {
-                printf("%-4d %-16s %-18s\n",
+                printf("%-4d " COLOR_CYAN "%-16s" COLOR_RESET " " COLOR_YELLOW "%-18s" COLOR_RESET "\n",
                        i + 1, all_devices[i].ip, all_devices[i].mac);
             }
 
-            printf("\nTotal: %d devices\n\n", all_count);
+            printf("\n" COLOR_SUCCESS "Total: %d devices" COLOR_RESET "\n\n", all_count);
+            continue;
+        }
+
+        if (strcmp(command, "reconnect") == 0) {
+            printf(COLOR_INFO "Rescanning network..." COLOR_RESET "\n\n");
+
+            if (do_ping) {
+                printf(COLOR_INFO "Pinging subnet %s.0/24 ..." COLOR_RESET "\n", subnet);
+                ping_sweep(subnet);
+            }
+
+            printf(COLOR_INFO "Reading ARP table..." COLOR_RESET "\n");
+            scan_device_t new_scanned[256];
+            int new_scan_count = scan_network(new_scanned, 256);
+            printf(COLOR_INFO "Devices in ARP cache: %d" COLOR_RESET "\n\n", new_scan_count);
+
+            printf(COLOR_SERVER "Matching MAC addresses:" COLOR_RESET "\n");
+
+            for (int i = 0; i < client_count; i++) {
+                client_disconnect(&clients[i]);
+                free((void *)clients[i].host);
+            }
+
+            client_count = filter_by_room(&room_pcs, new_scanned, new_scan_count, clients, key_path, user);
+
+            printf("\n" COLOR_SUCCESS "Matched PCs: %d" COLOR_RESET "\n", client_count);
+
+            if (client_count == 0) {
+                fprintf(stderr, COLOR_ERROR "No devices found on network\n" COLOR_RESET);
+                continue;
+            }
+
+            printf(COLOR_INFO "Connecting..." COLOR_RESET "\n");
+            int reconnected = 0;
+            for (int i = 0; i < client_count; i++) {
+                if (client_connect(&clients[i]) == SSH_OK) {
+                    reconnected++;
+                }
+            }
+
+            printf("\n" COLOR_SUCCESS "Reconnected: %d/%d" COLOR_RESET "\n\n", reconnected, client_count);
             continue;
         }
 

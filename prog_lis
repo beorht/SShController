@@ -1,4 +1,6 @@
 go
+wget
+curl
 code
 vim
 7zip

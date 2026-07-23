@@ -1,4 +1,5 @@
 #include "Scan.h"
+#include "Colors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -94,7 +95,7 @@ int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
                 clients[found].session = NULL;
                 found++;
 
-                printf("  Found: %-14s  IP: %-16s  MAC: %s\n",
+                printf("  " COLOR_GREEN "Found:" COLOR_RESET " %-14s  IP: " COLOR_CYAN "%-16s" COLOR_RESET "  MAC: " COLOR_YELLOW "%s" COLOR_RESET "\n",
                        db_list->entries[d].name,
                        scanned[s].ip,
                        scanned[s].mac);

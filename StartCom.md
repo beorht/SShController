@@ -105,6 +105,7 @@ Commands:
   <command>   - send command to all clients in room_403
   list        - show connected clients
   scan        - show all devices on network
+  reconnect   - rescan network and reconnect to found PCs
   help        - show this help
   exit/quit/q - disconnect and exit
 
