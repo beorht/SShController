@@ -1,15 +1,7 @@
-#include <libssh/libssh.h>
+#include "Control.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef struct {
-    const char *host;
-    const char *user;
-    int         port;
-    const char *key_path;
-    ssh_session session;
-} client_t;
 
 int client_connect(client_t *client) {
     client->session = ssh_new();
@@ -101,49 +93,4 @@ void client_disconnect(client_t *client) {
         ssh_free(client->session);
         client->session = NULL;
     }
-}
-
-int main(void) {
-    client_t clients[] = {
-        { "192.168.100.21", "teacher",   22, "/home/thinklinux/.ssh/classroom_agent", NULL },
-        { "192.168.100.251", "teacher", 22, "/home/thinklinux/.ssh/classroom_agent", NULL },
-    };
-
-    int client_count = sizeof(clients) / sizeof(clients[0]);
-
-    for (int i = 0; i < client_count; i++) {
-        client_connect(&clients[i]);
-    }
-
-    char command[1024];
-    printf("\nConnected to %d clients. Type 'help' for commands, 'exit' to quit:\n\n", client_count);
-
-    while (1) {
-        printf(">> ");
-        if (!fgets(command, sizeof(command), stdin)) break;
-
-        command[strcspn(command, "\n")] = '\0';
-
-        if (strlen(command) == 0) continue;
-
-        if (strcmp(command, "exit") == 0 || strcmp(command, "quit") == 0 || strcmp(command, "q") == 0) {
-            break;
-        }
-
-        if (strcmp(command, "help") == 0) {
-            printf("Commands:\n");
-            printf("  <command>  - send command to all clients\n");
-            printf("  help       - show this help\n");
-            printf("  exit/quit/q - disconnect and exit\n");
-            continue;
-        }
-
-        broadcast_command(clients, client_count, command);
-    }
-
-    for (int i = 0; i < client_count; i++) {
-        client_disconnect(&clients[i]);
-    }
-
-    return 0;
 }

@@ -1,78 +1,107 @@
+#include "Scan.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 
-// Type of Lan
-typedef struct {
-    char ip[16];
-    char mac[18];
-    char status[16]; // REACHABLE / STALE / FAILED
-} device_t;
-
-// Ping lan
-void ping_sweep( const char *subnet ) {
+void ping_sweep(const char *subnet) {
     char cmd[128];
-    for ( int i = 1; i <= 254; i++ ) {
-        snprintf( cmd, sizeof( cmd ) , "ping -c 1 -W 1 %s.%d > /dev/null 2>&1 &", subnet, i );
-        system( cmd );
+    for (int i = 1; i <= 254; i++) {
+        snprintf(cmd, sizeof(cmd),
+                 "ping -c 1 -W 1 %s.%d > /dev/null 2>&1 &", subnet, i);
+        system(cmd);
     }
-
-    sleep(4); // wait for response
+    sleep(4);
 }
 
-// Read ARP table
-int read_arp_table( device_t *devices, int max ) {
-    FILE *fp = popen( "ip neigh show", "r" );
-
-    if ( !fp ) return 0;
+int scan_network(scan_device_t *devices, int max) {
+    FILE *fp = popen("ip neigh show", "r");
+    if (!fp) return 0;
 
     char line[256];
     int count = 0;
 
-    while ( fgets( line, sizeof( line ), fp ) && count < max ) {
+    while (fgets(line, sizeof(line), fp) && count < max) {
         char ip[16], dev[32], mac[18], state[16];
 
-        if ( sscanf( line, "%15s dev %31s lladdr %17s %15s", ip, dev, mac, state ) >= 3 ) {
-            // loopback nevalidation
-            if ( strstr(dev, "lo") ) continue;
-            if ( strcmp(mac, "00:00:00:00:00:00") == 0 ) continue;
+        if (sscanf(line, "%15s dev %31s lladdr %17s %15s",
+                   ip, dev, mac, state) >= 3) {
+            if (strstr(dev, "lo")) continue;
+            if (strcmp(mac, "00:00:00:00:00:00") == 0) continue;
 
-            strcpy( devices[count].ip, ip );
-            strcpy( devices[count].mac, mac );
-            strcpy( devices[count].status, state );
-
+            strcpy(devices[count].ip, ip);
+            strcpy(devices[count].mac, mac);
             count++;
         }
     }
 
     pclose(fp);
-
     return count;
 }
 
-int main( int argc, char *argv[] ) {
-    const char *subnet = "192.168.100";
+int read_arp_table(device_t *devices, int max) {
+    FILE *fp = popen("ip neigh show", "r");
+    if (!fp) return 0;
 
-    if ( argc > 1 ) subnet = argv[1];
+    char line[256];
+    int count = 0;
 
-    printf( "Scanning subnet %s.0/24 ...\n\n", subnet );
+    while (fgets(line, sizeof(line), fp) && count < max) {
+        char ip[16], dev[32], mac[18], state[16];
 
-    ping_sweep( subnet );
+        if (sscanf(line, "%15s dev %31s lladdr %17s %15s",
+                   ip, dev, mac, state) >= 3) {
+            if (strstr(dev, "lo")) continue;
+            if (strcmp(mac, "00:00:00:00:00:00") == 0) continue;
 
-    device_t devices[256];
-    int count = read_arp_table( devices, 256 );
-    
-    printf( "%-16s %-18s %s\n", "IP", "MAC", "Status" );
-    printf( "%-16s %-18s %s\n", "---", "---", "---" );
-
-    for ( int i = 0; i < count; i++ ) {
-  
-        printf( "%-16s %-18s %s\n", 
-                devices[i].ip, devices[i].mac, devices[i].status );
+            strcpy(devices[count].ip, ip);
+            strcpy(devices[count].mac, mac);
+            strcpy(devices[count].status, state);
+            count++;
+        }
     }
 
-    printf( "\nTotal: %d devices\n", count );
+    pclose(fp);
+    return count;
+}
 
-    return 0;
+static void to_lower_mac(const char *src, char *dst) {
+    int i;
+    for (i = 0; src[i] && i < 17; i++) {
+        dst[i] = tolower((unsigned char)src[i]);
+    }
+    dst[i] = '\0';
+}
+
+int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
+                   client_t *clients, const char *key_path) {
+    int found = 0;
+
+    for (int d = 0; d < db_list->count; d++) {
+        char db_mac_lower[18];
+        to_lower_mac(db_list->entries[d].mac, db_mac_lower);
+
+        for (int s = 0; s < scan_count; s++) {
+            char scan_mac_lower[18];
+            to_lower_mac(scanned[s].mac, scan_mac_lower);
+
+            if (strcmp(db_mac_lower, scan_mac_lower) == 0) {
+                clients[found].host = strdup(scanned[s].ip);
+                clients[found].user = "teacher";
+                clients[found].port = 22;
+                clients[found].key_path = key_path;
+                clients[found].session = NULL;
+                found++;
+
+                printf("  Found: %-14s  IP: %-16s  MAC: %s\n",
+                       db_list->entries[d].name,
+                       scanned[s].ip,
+                       scanned[s].mac);
+                break;
+            }
+        }
+    }
+
+    return found;
 }
