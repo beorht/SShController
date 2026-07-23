@@ -1,0 +1,262 @@
+# Nmap 7.99 scan initiated Thu Jul 23 10:18:11 2026 as: nmap -oN scan_result.txt -sn 192.168.100.1/24
+Nmap scan report for _gateway (192.168.100.1)
+Host is up (0.0064s latency).
+MAC Address: 94:A4:F9:B0:8E:C2 (Huawei Technologies)
+Nmap scan report for 192.168.100.3
+Host is up (0.0029s latency).
+MAC Address: F4:B5:20:69:AF:CA (Biostar Microtech international)
+Nmap scan report for 192.168.100.10
+Host is up (0.0032s latency).
+MAC Address: 5C:34:5B:92:55:5A (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.15
+Host is up (0.0023s latency).
+MAC Address: F4:B5:20:66:F1:FC (Biostar Microtech international)
+Nmap scan report for 192.168.100.17
+Host is up (0.0019s latency).
+MAC Address: 28:70:4E:35:FB:69 (Ubiquiti)
+Nmap scan report for 192.168.100.20
+Host is up (0.0013s latency).
+MAC Address: F4:B5:20:66:F1:EC (Biostar Microtech international)
+Nmap scan report for 192.168.100.26
+Host is up (0.0015s latency).
+MAC Address: F4:B5:20:69:AF:98 (Biostar Microtech international)
+Nmap scan report for 192.168.100.29
+Host is up (0.0016s latency).
+MAC Address: 5C:34:5B:92:57:62 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.42
+Host is up (0.0050s latency).
+MAC Address: F4:B5:20:66:E2:44 (Biostar Microtech international)
+Nmap scan report for 192.168.100.46
+Host is up (0.0020s latency).
+MAC Address: 5C:34:5B:92:55:91 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.51
+Host is up (0.0016s latency).
+MAC Address: F4:B5:20:69:AE:A4 (Biostar Microtech international)
+Nmap scan report for 192.168.100.55
+Host is up (0.0023s latency).
+MAC Address: F4:B5:20:69:AF:DC (Biostar Microtech international)
+Nmap scan report for 192.168.100.56
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:69:AE:90 (Biostar Microtech international)
+Nmap scan report for 192.168.100.57
+Host is up (0.16s latency).
+MAC Address: B2:08:D7:88:AA:73 (Unknown)
+Nmap scan report for 192.168.100.58
+Host is up (0.0021s latency).
+MAC Address: 04:03:12:20:63:6E (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.66
+Host is up (0.20s latency).
+MAC Address: FE:69:46:84:88:E1 (Unknown)
+Nmap scan report for 192.168.100.70
+Host is up (0.0017s latency).
+MAC Address: 8C:16:45:4C:41:51 (LCFC(Hefei) Electronics Technology)
+Nmap scan report for 192.168.100.74
+Host is up (0.0021s latency).
+MAC Address: 5C:34:5B:92:57:66 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.81
+Host is up (0.0021s latency).
+MAC Address: F4:B5:20:66:F2:4D (Biostar Microtech international)
+Nmap scan report for 192.168.100.83
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:69:AE:EC (Biostar Microtech international)
+Nmap scan report for 192.168.100.85
+Host is up (0.0019s latency).
+MAC Address: 5C:34:5B:92:57:56 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.87
+Host is up (0.0016s latency).
+MAC Address: BC:5E:33:32:C7:13 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.88
+Host is up (0.0016s latency).
+MAC Address: F4:B5:20:69:AF:A7 (Biostar Microtech international)
+Nmap scan report for 192.168.100.89
+Host is up (0.0023s latency).
+MAC Address: F4:B5:20:66:E1:62 (Biostar Microtech international)
+Nmap scan report for 192.168.100.90
+Host is up (0.042s latency).
+MAC Address: 9E:62:66:37:42:51 (Unknown)
+Nmap scan report for 192.168.100.93
+Host is up (0.22s latency).
+MAC Address: 26:F3:65:0A:17:26 (Unknown)
+Nmap scan report for 192.168.100.94
+Host is up (0.0020s latency).
+MAC Address: F4:B5:20:69:AF:6F (Biostar Microtech international)
+Nmap scan report for 192.168.100.95
+Host is up (0.0041s latency).
+MAC Address: F4:B5:20:69:AE:CD (Biostar Microtech international)
+Nmap scan report for 192.168.100.96
+Host is up (0.0043s latency).
+MAC Address: 28:70:4E:35:F4:B1 (Ubiquiti)
+Nmap scan report for 192.168.100.98
+Host is up (0.0013s latency).
+MAC Address: F4:B5:20:66:E2:40 (Biostar Microtech international)
+Nmap scan report for 192.168.100.100
+Host is up (0.32s latency).
+MAC Address: F6:92:33:6F:26:CF (Unknown)
+Nmap scan report for 192.168.100.101
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:66:F1:FF (Biostar Microtech international)
+Nmap scan report for 192.168.100.105
+Host is up (0.23s latency).
+MAC Address: E6:23:65:AA:87:AF (Unknown)
+Nmap scan report for 192.168.100.107
+Host is up (0.081s latency).
+MAC Address: F6:2F:FF:2F:3C:BA (Unknown)
+Nmap scan report for 192.168.100.109
+Host is up (0.21s latency).
+MAC Address: A0:4F:E4:1F:8B:BE (PAX Computer Technology(Shenzhen))
+Nmap scan report for 192.168.100.111
+Host is up (0.0014s latency).
+MAC Address: F4:B5:20:66:F0:6A (Biostar Microtech international)
+Nmap scan report for 192.168.100.118
+Host is up (0.0016s latency).
+MAC Address: 5C:34:5B:92:55:FA (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.122
+Host is up (0.0047s latency).
+MAC Address: A4:D5:C2:78:20:DC (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.124
+Host is up (0.0023s latency).
+MAC Address: 5C:34:5B:92:55:FB (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.125
+Host is up (0.0045s latency).
+MAC Address: F4:B5:20:66:E3:31 (Biostar Microtech international)
+Nmap scan report for 192.168.100.128
+Host is up (0.0048s latency).
+MAC Address: F4:B5:20:69:AE:8D (Biostar Microtech international)
+Nmap scan report for 192.168.100.135
+Host is up (0.0051s latency).
+MAC Address: 5C:34:5B:92:55:90 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.137
+Host is up (0.0050s latency).
+MAC Address: 04:03:12:20:63:69 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.138
+Host is up (0.0016s latency).
+MAC Address: A4:D5:C2:78:20:47 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.139
+Host is up (0.0051s latency).
+MAC Address: F4:B5:20:69:AF:DA (Biostar Microtech international)
+Nmap scan report for 192.168.100.141
+Host is up (0.0016s latency).
+MAC Address: 74:3F:C2:83:3B:9D (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.142
+Host is up (0.0015s latency).
+MAC Address: 5C:34:5B:92:57:6C (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.144
+Host is up (0.082s latency).
+MAC Address: 4A:64:79:4A:2B:D5 (Unknown)
+Nmap scan report for 192.168.100.149
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:66:EA:F3 (Biostar Microtech international)
+Nmap scan report for 192.168.100.151
+Host is up (0.026s latency).
+MAC Address: C2:D2:DF:5C:F7:6E (Unknown)
+Nmap scan report for 192.168.100.154
+Host is up (0.0055s latency).
+MAC Address: F4:B5:20:69:AE:8A (Biostar Microtech international)
+Nmap scan report for 192.168.100.155
+Host is up (0.093s latency).
+MAC Address: E2:B0:58:B0:D2:9A (Unknown)
+Nmap scan report for 192.168.100.157
+Host is up (0.33s latency).
+MAC Address: 46:D9:AC:49:22:46 (Unknown)
+Nmap scan report for 192.168.100.161
+Host is up (0.0021s latency).
+MAC Address: 04:03:12:20:63:E0 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.165
+Host is up (0.0030s latency).
+MAC Address: 74:3F:C2:83:3B:9B (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.167
+Host is up (0.029s latency).
+MAC Address: 58:AE:A8:20:4A:30 (Huawei Technologies)
+Nmap scan report for 192.168.100.170
+Host is up (0.0014s latency).
+MAC Address: F4:B5:20:69:AF:27 (Biostar Microtech international)
+Nmap scan report for 192.168.100.171
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:69:AF:A3 (Biostar Microtech international)
+Nmap scan report for 192.168.100.175
+Host is up (0.0021s latency).
+MAC Address: F4:B5:20:69:AF:DF (Biostar Microtech international)
+Nmap scan report for 192.168.100.176
+Host is up (0.0057s latency).
+MAC Address: 04:03:12:20:64:36 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.178
+Host is up (0.0015s latency).
+MAC Address: F4:B5:20:69:AE:C6 (Biostar Microtech international)
+Nmap scan report for 192.168.100.180
+Host is up (1.3s latency).
+MAC Address: 08:4F:0A:21:CC:F0 (Huawei Technologies)
+Nmap scan report for 192.168.100.181
+Host is up (0.0018s latency).
+MAC Address: F4:B5:20:69:AE:6E (Biostar Microtech international)
+Nmap scan report for 192.168.100.182
+Host is up (0.0020s latency).
+MAC Address: F4:B5:20:66:F6:9A (Biostar Microtech international)
+Nmap scan report for 192.168.100.185
+Host is up (0.0021s latency).
+MAC Address: 5C:34:5B:92:57:58 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.190
+Host is up (0.27s latency).
+MAC Address: 26:35:01:1C:78:57 (Unknown)
+Nmap scan report for 192.168.100.195
+Host is up (0.0023s latency).
+MAC Address: F4:B5:20:66:E0:13 (Biostar Microtech international)
+Nmap scan report for 192.168.100.199
+Host is up (0.0018s latency).
+MAC Address: 5C:34:5B:92:57:52 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.200
+Host is up (0.0019s latency).
+MAC Address: F4:B5:20:66:F1:E6 (Biostar Microtech international)
+Nmap scan report for 192.168.100.207
+Host is up (0.27s latency).
+MAC Address: 02:5E:85:FE:22:C1 (Unknown)
+Nmap scan report for 192.168.100.209
+Host is up (0.0020s latency).
+MAC Address: 28:70:4E:35:F4:49 (Ubiquiti)
+Nmap scan report for 192.168.100.213
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:69:AF:D9 (Biostar Microtech international)
+Nmap scan report for 192.168.100.216
+Host is up (0.0046s latency).
+MAC Address: 5C:34:5B:92:57:5F (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.222
+Host is up (0.0017s latency).
+MAC Address: F4:B5:20:69:AE:C5 (Biostar Microtech international)
+Nmap scan report for 192.168.100.223
+Host is up (0.0016s latency).
+MAC Address: F4:B5:20:69:AF:A9 (Biostar Microtech international)
+Nmap scan report for 192.168.100.224
+Host is up (0.0020s latency).
+MAC Address: 5C:34:5B:92:54:D1 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.229
+Host is up (0.0015s latency).
+MAC Address: F4:B5:20:69:AF:8D (Biostar Microtech international)
+Nmap scan report for 192.168.100.231
+Host is up (0.0019s latency).
+MAC Address: F4:B5:20:69:AE:22 (Biostar Microtech international)
+Nmap scan report for 192.168.100.233
+Host is up (0.0040s latency).
+MAC Address: F4:B5:20:66:F5:10 (Biostar Microtech international)
+Nmap scan report for 192.168.100.234
+Host is up (0.0042s latency).
+MAC Address: F4:B5:20:69:AE:8E (Biostar Microtech international)
+Nmap scan report for 192.168.100.237
+Host is up (0.0015s latency).
+MAC Address: 5C:34:5B:92:57:53 (Hangzhou Hikvision Digital Technology)
+Nmap scan report for 192.168.100.241
+Host is up (0.0018s latency).
+MAC Address: 28:70:4E:35:F6:B5 (Ubiquiti)
+Nmap scan report for 192.168.100.247
+Host is up (0.0037s latency).
+MAC Address: F4:B5:20:69:AF:A2 (Biostar Microtech international)
+Nmap scan report for 192.168.100.250
+Host is up (0.15s latency).
+MAC Address: 16:18:DA:AD:D1:6F (Unknown)
+Nmap scan report for 192.168.100.252
+Host is up (0.0018s latency).
+MAC Address: F4:B5:20:66:E3:4F (Biostar Microtech international)
+Nmap scan report for 192.168.100.254
+Host is up (0.0088s latency).
+MAC Address: 5C:34:5B:92:56:0E (Hangzhou Hikvision Digital Technology)
+Nmap scan report for thinklinux.local (192.168.100.68)
+Host is up.
+# Nmap done at Thu Jul 23 10:18:22 2026 -- 256 IP addresses (87 hosts up) scanned in 11.33 seconds
