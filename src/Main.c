@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
     printf("Matching MAC addresses:\n");
     client_t clients[MAX_CLIENTS];
-    int client_count = filter_by_room(&room_pcs, scanned, scan_count, clients, key_path);
+    int client_count = filter_by_room(&room_pcs, scanned, scan_count, clients, key_path, user);
 
     printf("\nMatched PCs: %d\n", client_count);
 
@@ -130,6 +130,7 @@ int main(int argc, char *argv[]) {
             printf("Commands:\n");
             printf("  <command>   - send command to all clients in %s\n", selected_room);
             printf("  list        - show connected clients\n");
+            printf("  scan        - show all devices on network\n");
             printf("  help        - show this help\n");
             printf("  exit/quit/q - disconnect and exit\n");
             continue;
@@ -144,6 +145,23 @@ int main(int argc, char *argv[]) {
                        clients[i].user);
             }
             printf("\n");
+            continue;
+        }
+
+        if (strcmp(command, "scan") == 0) {
+            printf("Scanning ARP table...\n\n");
+            scan_device_t all_devices[256];
+            int all_count = scan_network(all_devices, 256);
+
+            printf("%-4s %-16s %-18s\n", "#", "IP", "MAC");
+            printf("%-4s %-16s %-18s\n", "---", "---", "---");
+
+            for (int i = 0; i < all_count; i++) {
+                printf("%-4d %-16s %-18s\n",
+                       i + 1, all_devices[i].ip, all_devices[i].mac);
+            }
+
+            printf("\nTotal: %d devices\n\n", all_count);
             continue;
         }
 

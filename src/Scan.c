@@ -75,7 +75,7 @@ static void to_lower_mac(const char *src, char *dst) {
 }
 
 int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
-                   client_t *clients, const char *key_path) {
+                   client_t *clients, const char *key_path, const char *user) {
     int found = 0;
 
     for (int d = 0; d < db_list->count; d++) {
@@ -88,7 +88,7 @@ int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
 
             if (strcmp(db_mac_lower, scan_mac_lower) == 0) {
                 clients[found].host = strdup(scanned[s].ip);
-                clients[found].user = "teacher";
+                clients[found].user = user;
                 clients[found].port = 22;
                 clients[found].key_path = key_path;
                 clients[found].session = NULL;

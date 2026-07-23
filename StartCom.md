@@ -100,8 +100,27 @@ Connected: 10/12
 
 Type 'help' for commands, 'exit' to quit:
 
+>> help
+Commands:
+  <command>   - send command to all clients in room_403
+  list        - show connected clients
+  scan        - show all devices on network
+  help        - show this help
+  exit/quit/q - disconnect and exit
+
+>> scan
+Scanning ARP table...
+
+#    IP               MAC
+---  ---              ---
+1    192.168.100.1    aa:bb:cc:dd:ee:01
+2    192.168.100.21   F4:B5:20:66:F4:37
+3    192.168.100.22   F4:B5:20:66:F5:2C
+...
+
+Total: 15 devices
+
 >> ip a
->> whoami
 >> list
 >> exit
 ```
