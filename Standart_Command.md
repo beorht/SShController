@@ -124,3 +124,90 @@ whoami
 ```bash
 who
 ```
+
+---
+
+## Уведомления
+
+### Сообщение на экран (3 секунды)
+```bash
+export DISPLAY=:0; notify-send -t 3000 "Учитель" "Текст сообщения"
+```
+
+### Сообщение на экран (10 секунд)
+```bash
+export DISPLAY=:0; notify-send -t 10000 "Учитель" "Текст сообщения"
+```
+
+### Критическое уведомление (пока не закроют)
+```bash
+export DISPLAY=:0; notify-send -u critical "Внимание!" "Текст сообщения"
+```
+
+### Уведомление с иконкой
+```bash
+export DISPLAY=:0; notify-send -t 5000 -i dialog-information "Заголовок" "Текст"
+```
+
+---
+
+## Запуск программ (Wayland / KDE Plasma)
+
+### Запуск программы на ученике
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block <имя_приложения>
+```
+
+### Firefox
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block firefox
+```
+
+### Dolphin (файловый менеджер)
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block dolphin
+```
+
+### Konsole (терминал)
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block konsole
+```
+
+### LibreOffice
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block libreoffice
+```
+
+### Kate (редактор)
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block kate
+```
+
+---
+
+## Закрытие программ (Wayland / KDE Plasma)
+
+### Закрыть программу по имени
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block pkill <имя_приложения>
+```
+
+### Закрыть все копии программы
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block killall <имя_приложения>
+```
+
+### Закрыть Firefox
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block pkill firefox
+```
+
+### Закрыть Konsole
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block pkill konsole
+```
+
+### Закрыть Dolphin
+```bash
+sudo -u student env XDG_RUNTIME_DIR=/run/user/1001 systemd-run --user --no-block pkill dolphin
+```

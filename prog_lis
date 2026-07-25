@@ -3,9 +3,12 @@ wget
 curl
 code
 vim
+nodejs
+npm
 7zip
 dbeaver
 sqlite3
 python3-pip
 python3-tk
+python3-venv
 ffmpeg

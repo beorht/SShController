@@ -30,6 +30,7 @@ typedef struct {
 room_list_t db_get_rooms(sqlite3 *db);
 pc_list_t   db_get_by_room(sqlite3 *db, const char *room);
 pc_list_t   db_get_all(sqlite3 *db);
+int         db_update_ip(sqlite3 *db, const char *room, const char *mac, const char *ip);
 void        db_free_list(pc_list_t *list);
 
 #endif

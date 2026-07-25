@@ -96,6 +96,29 @@ pc_list_t db_get_all(sqlite3 *db) {
     return list;
 }
 
+int db_update_ip(sqlite3 *db, const char *room, const char *mac, const char *ip) {
+    sqlite3_stmt *stmt;
+    char sql[128];
+    snprintf(sql, sizeof(sql), "UPDATE %s SET ip = ? WHERE mac_address = ?;", room);
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, ip, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, mac, -1, SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+    return sqlite3_changes(db);
+}
+
 void db_free_list(pc_list_t *list) {
     (void)list;
 }

@@ -75,7 +75,7 @@ static void to_lower_mac(const char *src, char *dst) {
     dst[i] = '\0';
 }
 
-int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
+int filter_by_room(sqlite3 *db, const char *room, pc_list_t *db_list, scan_device_t *scanned, int scan_count,
                    client_t *clients, const char *key_path, const char *user) {
     int found = 0;
 
@@ -95,6 +95,10 @@ int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
                 clients[found].session = NULL;
                 found++;
 
+                if (db && db_list->entries[d].ip[0] == '\0') {
+                    db_update_ip(db, room, db_list->entries[d].mac, scanned[s].ip);
+                }
+
                 printf("  " COLOR_GREEN "Found:" COLOR_RESET " %-14s  IP: " COLOR_CYAN "%-16s" COLOR_RESET "  MAC: " COLOR_YELLOW "%s" COLOR_RESET "\n",
                        db_list->entries[d].name,
                        scanned[s].ip,
@@ -105,4 +109,22 @@ int filter_by_room(pc_list_t *db_list, scan_device_t *scanned, int scan_count,
     }
 
     return found;
+}
+
+int save_ips_to_file(client_t *clients, int count, const char *filename) {
+    FILE *fp = fopen(filename, "w");
+    if (!fp) {
+        fprintf(stderr, COLOR_ERROR "Cannot open file %s for writing\n" COLOR_RESET, filename);
+        return -1;
+    }
+
+    for (int i = 0; i < count; i++) {
+        if (clients[i].session) {
+            fprintf(fp, "%s\n", clients[i].host);
+        }
+    }
+
+    fclose(fp);
+    printf(COLOR_SUCCESS "Saved %d IPs to %s" COLOR_RESET "\n", count, filename);
+    return 0;
 }

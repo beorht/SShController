@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
     printf(COLOR_SERVER "Matching MAC addresses:" COLOR_RESET "\n");
     client_t clients[MAX_CLIENTS];
-    int client_count = filter_by_room(&room_pcs, scanned, scan_count, clients, key_path, user);
+    int client_count = filter_by_room(db, selected_room, &room_pcs, scanned, scan_count, clients, key_path, user);
 
     printf("\n" COLOR_SUCCESS "Matched PCs: %d" COLOR_RESET "\n", client_count);
 
@@ -98,13 +98,36 @@ int main(int argc, char *argv[]) {
 
     printf("\n" COLOR_INFO "Connecting..." COLOR_RESET "\n");
     int connected = 0;
+    char failed_ips[256][16];
+    int failed_count = 0;
+
     for (int i = 0; i < client_count; i++) {
         if (client_connect(&clients[i]) == SSH_OK) {
             connected++;
+        } else {
+            strncpy(failed_ips[failed_count], clients[i].host, 15);
+            failed_ips[failed_count][15] = '\0';
+            failed_count++;
         }
     }
 
-    printf("\n" COLOR_SUCCESS "Connected: %d/%d" COLOR_RESET "\n\n", connected, client_count);
+    printf("\n" COLOR_SUCCESS "Connected: %d/%d" COLOR_RESET "\n", connected, client_count);
+
+    if (failed_count > 0) {
+        printf(COLOR_ERROR "Failed: %d" COLOR_RESET "\n\n", failed_count);
+
+        char failed_filename[256];
+        snprintf(failed_filename, sizeof(failed_filename), "%s_failed.txt", selected_room);
+        FILE *fp = fopen(failed_filename, "w");
+        if (fp) {
+            for (int i = 0; i < failed_count; i++) {
+                fprintf(fp, "%s\n", failed_ips[i]);
+            }
+            fclose(fp);
+                    printf(COLOR_INFO "Failed IPs saved to: %s" COLOR_RESET "\n", failed_filename);
+                    printf(COLOR_HINT "Run: bash scripts/setup_keys.sh -f %s" COLOR_RESET "\n\n", failed_filename);
+        }
+    }
 
     if (connected == 0) {
         fprintf(stderr, COLOR_ERROR "No clients connected\n" COLOR_RESET);
@@ -132,7 +155,8 @@ int main(int argc, char *argv[]) {
             printf("  " COLOR_CYAN "<command>" COLOR_RESET "   - send command to all clients in " COLOR_YELLOW "%s" COLOR_RESET "\n", selected_room);
             printf("  " COLOR_CYAN "list" COLOR_RESET "        - show connected clients\n");
             printf("  " COLOR_CYAN "scan" COLOR_RESET "        - show all devices on network\n");
-            printf("  " COLOR_CYAN "reconnect" COLOR_RESET "  - reconnect to all clients\n");
+            printf("  " COLOR_CYAN "reconnect" COLOR_RESET "  - rescan and reconnect to clients\n");
+            printf("  " COLOR_CYAN "saveips" COLOR_RESET "     - save connected IPs to file\n");
             printf("  " COLOR_CYAN "help" COLOR_RESET "        - show this help\n");
             printf("  " COLOR_RED "exit/quit/q" COLOR_RESET " - disconnect and exit\n");
             continue;
@@ -190,7 +214,7 @@ int main(int argc, char *argv[]) {
                 free((void *)clients[i].host);
             }
 
-            client_count = filter_by_room(&room_pcs, new_scanned, new_scan_count, clients, key_path, user);
+            client_count = filter_by_room(db, selected_room, &room_pcs, new_scanned, new_scan_count, clients, key_path, user);
 
             printf("\n" COLOR_SUCCESS "Matched PCs: %d" COLOR_RESET "\n", client_count);
 
@@ -201,13 +225,44 @@ int main(int argc, char *argv[]) {
 
             printf(COLOR_INFO "Connecting..." COLOR_RESET "\n");
             int reconnected = 0;
+            char re_failed_ips[256][16];
+            int re_failed_count = 0;
+
             for (int i = 0; i < client_count; i++) {
                 if (client_connect(&clients[i]) == SSH_OK) {
                     reconnected++;
+                } else {
+                    strncpy(re_failed_ips[re_failed_count], clients[i].host, 15);
+                    re_failed_ips[re_failed_count][15] = '\0';
+                    re_failed_count++;
                 }
             }
 
-            printf("\n" COLOR_SUCCESS "Reconnected: %d/%d" COLOR_RESET "\n\n", reconnected, client_count);
+            printf("\n" COLOR_SUCCESS "Reconnected: %d/%d" COLOR_RESET "\n", reconnected, client_count);
+
+            if (re_failed_count > 0) {
+                printf(COLOR_ERROR "Failed: %d" COLOR_RESET "\n\n", re_failed_count);
+
+                char failed_filename[256];
+                snprintf(failed_filename, sizeof(failed_filename), "%s_failed.txt", selected_room);
+                FILE *fp = fopen(failed_filename, "w");
+                if (fp) {
+                    for (int i = 0; i < re_failed_count; i++) {
+                        fprintf(fp, "%s\n", re_failed_ips[i]);
+                    }
+                    fclose(fp);
+                    printf(COLOR_INFO "Failed IPs saved to: %s" COLOR_RESET "\n", failed_filename);
+                    printf(COLOR_HINT "Run: bash scripts/setup_keys.sh -f %s" COLOR_RESET "\n\n", failed_filename);
+                }
+            }
+            continue;
+        }
+
+        if (strcmp(command, "saveips") == 0) {
+            char filename[256];
+            snprintf(filename, sizeof(filename), "%s_ips.txt", selected_room);
+            save_ips_to_file(clients, client_count, filename);
+            printf("\n");
             continue;
         }
 
